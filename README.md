@@ -1,8 +1,6 @@
 ## xgbtuner
 
-The [xgboost](https://github.com/dmlc/xgboost) is a leading black box prediction algorithm. 
-
-Coming soon:  `xgbtuner` will offer parameter grid search, random search, gradient descent, and Bayesian optimization methods to help find the parameters of the xgboost algorithm that lead to optimal predictions for a given dataset.
+[xgboost](https://github.com/dmlc/xgboost) is a leading implementation of gradient boosting machines.  Coming soon:  `xgbtuner` will offer parameter grid search, random search, gradient descent, and Bayesian optimization methods to help find the parameters of the xgboost algorithm that lead to optimal predictions for a given dataset.
 
 ## Background and references
 
