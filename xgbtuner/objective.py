@@ -1,32 +1,30 @@
-class Objective(object):
+
+import pdb
+import xgboost as xgb
+
+class Loss(object):
     ''' Parameters and methods for evaluating the objective function '''
-    def __init__(self, data, fixed_params, old_results = None):
+    def __init__(self, data):
         '''
-            Args:
-                data (xgboost.Dmatrix): the data on which to tune the parameters
-                fixed_params (dictionary):  parameters that will not be tuned
-                old_results (string): the path/name of a file containing previous
-                    objective evaluations
-            '''
+        Args:
+            data (xgboost.Dmatrix): the data on which to tune the parameters
+        '''
         self.data = data
-        self.fixed_params = fixed_params
-        if old_results:
-            self.results = pd.read_csv(old_results)
     
-    def evaluate(params):
+    def evaluate(self, params):
         '''
-            Args:
-                params (dictionary):  parameters over which to tune
-            
-            Returns: A dictionary containing the best tried number of rounds and 
-                the associated optimum loss function value
-            '''
-        nround = params.pop('nround')
+        Returns: A dictionary containing the best tried number of rounds and 
+            the associated optimum loss function value
+        '''
+        assert params['num_boost_round']
+        nround = params.pop('num_boost_round')
+        params.update(self.fixed_params)
         res = xgb.cv(params = params, 
                      dtrain = self.data, 
-                     nround = nround,
-                     nfold = self.fixed_params['nfold'])
+                     num_boost_round = nround,
+                     nfold = self.fixed_params['nfold'],
+                     show_progress=False)
         loss = res.ix[:,0]
-        wm = loss.idxmin()
+        wm = loss.idxmin() # generalize this line for convex/concave objectives
         return {'loss':loss[wm], 'wm':wm}
 
